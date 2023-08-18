@@ -207,11 +207,7 @@ namespace Intuit.Ipp.DataService
                 IdsExceptionManager.HandleException(exception);
             }
 
-            string resourceString = entity.GetType().Name.ToLower(CultureInfo.InvariantCulture);
-            if (resourceString == "creditcardpaymenttxn")
-            {
-                resourceString = "creditcardpayment";
-            }
+            var resourceString = GetResourceString(entity);
 
             // Builds resource Uri
             string uri = string.Format(CultureInfo.InvariantCulture, "{0}/company/{1}/{2}", CoreConstants.VERSION, this.serviceContext.RealmId, resourceString);
@@ -269,11 +265,7 @@ namespace Intuit.Ipp.DataService
                 IdsExceptionManager.HandleException(exception);
             }
 
-            string resourceString = entity.GetType().Name.ToLower(CultureInfo.InvariantCulture);
-            if (resourceString == "creditcardpaymenttxn")
-            {
-                resourceString = "creditcardpayment";
-            }
+            var resourceString = GetResourceString(entity);
             // Builds resource Uri
             string uri = string.Format(CultureInfo.InvariantCulture, "{0}/company/{1}/{2}?operation=delete", CoreConstants.VERSION, this.serviceContext.RealmId, resourceString);
 
@@ -410,11 +402,7 @@ namespace Intuit.Ipp.DataService
                 IdsExceptionManager.HandleException(exception);
             }
 
-            string resourceString = entity.GetType().Name.ToLower(CultureInfo.InvariantCulture);
-            if (resourceString == "creditcardpaymenttxn")
-            {
-                resourceString = "creditcardpayment";
-            }
+            var resourceString = GetResourceString(entity);
             // Builds resource Uri
             string uri = string.Format(CultureInfo.InvariantCulture, "{0}/company/{1}/{2}", CoreConstants.VERSION, this.serviceContext.RealmId, resourceString);
 
@@ -810,12 +798,7 @@ namespace Intuit.Ipp.DataService
             }
 
             string id = string.Empty;
-            string resourceString = entity.GetType().Name.ToLower(CultureInfo.InvariantCulture);
-            if (resourceString == "creditcardpaymenttxn")
-            {
-                resourceString = "creditcardpayment";
-            }
-
+            var resourceString = GetResourceString(entity);
 
             // Convert to role base to get the Id property which is required to Find the entity.
             IntuitEntity intuitEntity = entity as IntuitEntity;
@@ -982,12 +965,8 @@ namespace Intuit.Ipp.DataService
             this.serviceContext.IppConfiguration.Logger.CustomLogger.Log(Diagnostics.TraceLevel.Info, "Called Method FindAll.");
 
             ServicesHelper.ValidateEntity(entity, serviceContext);
-            string resourceString = entity.GetType().Name;
 
-            if (resourceString.ToLower(CultureInfo.InvariantCulture) == "creditcardpaymenttxn")
-            {
-                resourceString = "creditcardpayment";
-            }
+            var resourceString = GetResourceString(entity);
             List<T> entities = new List<T>();
 
             if (resourceString == "TaxClassification")
@@ -2109,6 +2088,18 @@ namespace Intuit.Ipp.DataService
 
         #endregion
 
+
+        private string GetResourceString(object entity)
+        {
+            var resourceString = entity.GetType().Name.ToLower(CultureInfo.InvariantCulture);
+            return resourceString switch
+            {
+                "creditcardpaymenttxn" => "creditcardpayment",
+                "taxservice" => "taxservice/taxcode",
+                _ => resourceString
+            };
+        }
+        
         /// <summary>
         /// Prepare Http request for Reading Tax Cassification methods
         /// </summary>
