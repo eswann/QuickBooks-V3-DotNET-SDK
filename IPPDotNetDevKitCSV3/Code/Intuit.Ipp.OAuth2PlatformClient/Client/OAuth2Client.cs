@@ -17,9 +17,8 @@ using System.Reflection;
 using System.Linq;
 using System.IO;
 using System.Globalization;
-using Serilog;
 using Intuit.Ipp.OAuth2PlatformClient.Diagnostics;
-using Serilog;
+using Microsoft.Extensions.Logging;
 
 namespace Intuit.Ipp.OAuth2PlatformClient
 {   /// <summary>
@@ -155,7 +154,7 @@ namespace Intuit.Ipp.OAuth2PlatformClient
         /// <summary>
         /// CustomLogger
         /// </summary>
-        public Serilog.ILogger CustomLogger { get; set; }
+        public ILogger CustomLogger { get; set; }
 
 
         /// <summary>

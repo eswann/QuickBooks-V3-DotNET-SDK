@@ -18,14 +18,12 @@
 // <summary>This file contains advanced logger for IPP .Net OAuth2 SDK.</summary>
 ////*********************************************************
 
+using Microsoft.Extensions.Logging;
+
 namespace Intuit.Ipp.OAuth2PlatformClient.Diagnostics
 {
     using System.IO;
     using System;
-    using Serilog;
-    using Serilog.Sinks.File;
-    using Serilog.Core;
-    using Serilog.Events;
     using System.Globalization;
 
     /// <summary>
@@ -87,7 +85,7 @@ namespace Intuit.Ipp.OAuth2PlatformClient.Diagnostics
         /// <summary>
         /// Serilog Logger
         /// </summary>
-        private Serilog.ILogger logger;
+        private ILogger logger;
 
         #region support later
         ///// <summary>
@@ -156,11 +154,11 @@ namespace Intuit.Ipp.OAuth2PlatformClient.Diagnostics
         /// Initializes a new instance of Advanced logging class        
         /// </summary>
         /// <param name="customLogger"></param>
-        public OAuthAdvancedLogging(Serilog.ILogger customLogger)
+        public OAuthAdvancedLogging(ILogger customLogger)
         {
             this.logger = customLogger;
             //Logging first info
-            logger.Information("Custom Logger is initialized");
+            logger.LogInformation("Custom Logger is initialized");
         }
 
 
@@ -179,61 +177,13 @@ namespace Intuit.Ipp.OAuth2PlatformClient.Diagnostics
             this.EnableSerilogRequestResponseLoggingForConsole = enableSerilogRequestResponseLoggingForConsole;
             this.EnableSerilogRequestResponseLoggingForFile = enableSerilogRequestResponseLoggingForFile;
             this.ServiceRequestLoggingLocationForFile = serviceRequestLoggingLocationForFile;
-     
-
-
-
-            string filePath = string.Empty;
-
-            if (this.EnableSerilogRequestResponseLoggingForFile)
-            {
-                //Assign tempath if no location found
-                if (string.IsNullOrWhiteSpace(this.ServiceRequestLoggingLocationForFile))
-                {
-                    this.ServiceRequestLoggingLocationForFile = Path.GetTempPath();
-                }
-
-
-                //Log file path for widows n ios
-                filePath = Path.Combine(this.ServiceRequestLoggingLocationForFile, "QBOApiLogs-" + DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture) + ".txt");
-
-            }
-
-            //Setting logger config for Serilog
-            var loggerConfig = new LoggerConfiguration()
-                 .MinimumLevel.Verbose();
-
-
-            //Enabling console log
-            if (this.EnableSerilogRequestResponseLoggingForConsole == true)
-            {
-                loggerConfig = loggerConfig.WriteTo.Console();
-            }
-
-            //Enabling Trace log
-            if (this.EnableSerilogRequestResponseLoggingForTrace == true)
-            {
-                loggerConfig = loggerConfig.WriteTo.Trace();
-            }
-
-            //Enabling Debug log
-            if (this.EnableSerilogRequestResponseLoggingForDebug == true)
-            {
-                loggerConfig = loggerConfig.WriteTo.Debug();
-
-            }
-
-            //Enabling file log
-            if (!string.IsNullOrEmpty(this.ServiceRequestLoggingLocationForFile) && this.EnableSerilogRequestResponseLoggingForFile == true)
-            {
-                loggerConfig = loggerConfig.WriteTo.File(filePath);
-            }
+            
 
             //Creating the Logger for Serilog
-            logger = loggerConfig.CreateLogger();
+            logger = new LoggerFactory().CreateLogger("QBO OAuth Logger");
 
             //Logging first info
-            logger.Information("Logger is initialized");
+            logger.LogInformation("Logger is initialized");
 
         }
 
@@ -243,7 +193,7 @@ namespace Intuit.Ipp.OAuth2PlatformClient.Diagnostics
         /// <param name="messageToWrite"></param>
         public void Log(string messageToWrite)
         {
-            logger.Write(LogEventLevel.Verbose, messageToWrite);
+            logger.LogDebug(messageToWrite);
         }
     }
 }

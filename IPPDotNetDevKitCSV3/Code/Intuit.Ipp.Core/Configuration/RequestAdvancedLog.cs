@@ -25,7 +25,6 @@ namespace Intuit.Ipp.Core.Configuration
 {
     using System.IO;
     using Intuit.Ipp.Exception;
-    using Serilog;
 
     /// <summary>
     /// Contains properties used to indicate whether request and response messages are to be logged.
@@ -87,9 +86,8 @@ namespace Intuit.Ipp.Core.Configuration
         /// <summary>
         /// Serilog CustomLogger
         /// </summary>
-        public Serilog.ILogger CustomLogger { get; set; }
-
-
+        public Microsoft.Extensions.Logging.ILogger CustomLogger { get; set; }
+        
 
         #region support later
         ///// <summary>

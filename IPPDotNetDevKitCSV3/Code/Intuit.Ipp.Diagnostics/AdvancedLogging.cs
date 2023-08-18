@@ -19,16 +19,13 @@
 // -----------------------------------------------------------------------
 
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace Intuit.Ipp.Diagnostics
 {
     using System.IO;
     //using Intuit.Ipp.Exception;
     using System;
-    using Serilog;
-    using Serilog.Sinks;
-    using Serilog.Core;
-    using Serilog.Events;
     using System.Globalization;
 
     /// <summary>
@@ -89,7 +86,7 @@ namespace Intuit.Ipp.Diagnostics
         /// <summary>
         /// Serilog ILogger
         /// </summary>
-        private Serilog.ILogger logger;
+        private Microsoft.Extensions.Logging.ILogger logger;
 
 
         /// <summary>
@@ -181,11 +178,11 @@ namespace Intuit.Ipp.Diagnostics
         /// Initializes a new instance of Advanced logging class        
         /// </summary>
         /// <param name="customLogger"></param>
-        public AdvancedLogging(Serilog.ILogger customLogger) 
+        public AdvancedLogging(Microsoft.Extensions.Logging.ILogger customLogger) 
         {
             this.logger = customLogger;
             //Logging first info
-            logger.Information("Custom Logger is initialized");
+            logger.LogInformation("Custom Logger is initialized");
         }
 
         /// <summary>
@@ -204,60 +201,12 @@ namespace Intuit.Ipp.Diagnostics
             this.EnableSerilogRequestResponseLoggingForConsole = enableSerilogRequestResponseLoggingForConsole;
             this.EnableSerilogRequestResponseLoggingForFile = enableSerilogRequestResponseLoggingForFile;
             this.ServiceRequestLoggingLocationForFile = serviceRequestLoggingLocationForFile;
-
-            string filePath = string.Empty;
-
-            //Assign tempath if no location found
-            if (string.IsNullOrWhiteSpace(this.ServiceRequestLoggingLocationForFile))
-            {
-                this.ServiceRequestLoggingLocationForFile = Path.GetTempPath();
-            }
-
-
-            //Log file path for widows n ios
-            filePath = Path.Combine(this.ServiceRequestLoggingLocationForFile, "QBOApiLogs-" + DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture) + ".txt");
             
-
-            //Setting logger config for Serilog
-            var loggerConfig = new LoggerConfiguration()
-                 .MinimumLevel.Verbose();
-
-
-            //Enabling console log
-            if (this.EnableSerilogRequestResponseLoggingForConsole == true)
-            {
-                loggerConfig = loggerConfig.WriteTo.Console();
-
-            }
-
-            //Enabling Trace log
-            if (this.EnableSerilogRequestResponseLoggingForTrace == true)
-            {
-                loggerConfig = loggerConfig.WriteTo.Trace();
-            }
-
-            //Enabling Debug log
-            if (this.EnableSerilogRequestResponseLoggingForDebug == true)
-            {
-                loggerConfig = loggerConfig.WriteTo.Debug();
-
-            }
-
-            //Enabling file log
-            if (!string.IsNullOrEmpty(this.ServiceRequestLoggingLocationForFile) && this.EnableSerilogRequestResponseLoggingForFile == true)
-            {
-                loggerConfig = loggerConfig.WriteTo.File(filePath);
-            }
-
-
             //Creating the Logger for Serilog
-            logger = loggerConfig.CreateLogger();
-
-
-
+            logger = new LoggerFactory().CreateLogger("QBO API Logger");
+            
             //Logging first info
-            logger.Information("Logger is initialized");
-
+            logger.LogInformation("Logger is initialized");
         }
 
         /// <summary>
@@ -266,7 +215,7 @@ namespace Intuit.Ipp.Diagnostics
         /// <param name="messageToWrite"></param>
         public void Log(string messageToWrite)
         {
-            logger.Write(LogEventLevel.Verbose, messageToWrite);
+            logger.LogDebug(messageToWrite);
         }
     }
 }

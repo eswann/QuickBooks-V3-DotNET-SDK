@@ -18,6 +18,9 @@
 // <summary>This file contains helper for Logging.</summary>
 ////*********************************************************
 ///
+
+using Microsoft.Extensions.Logging;
+
 namespace Intuit.Ipp.OAuth2PlatformClient.Diagnostics
 { 
     /// <summary>
@@ -29,7 +32,7 @@ namespace Intuit.Ipp.OAuth2PlatformClient.Diagnostics
        /// Gets the Request Response Logging mechanism for advanced logging using serilog.
        /// </summary>
        /// <returns>Returns value which specifies the request response logging mechanism.</returns>
-        public static OAuthAdvancedLogging GetAdvancedLoggingCustom(Serilog.ILogger customLogger)
+        public static OAuthAdvancedLogging GetAdvancedLoggingCustom(ILogger customLogger)
         {
             OAuthAdvancedLogging advancedLogger;
             advancedLogger = new OAuthAdvancedLogging(customLogger);
