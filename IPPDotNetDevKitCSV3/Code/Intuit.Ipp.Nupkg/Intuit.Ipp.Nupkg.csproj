@@ -6,16 +6,15 @@
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
     <LibTargetFrameworks>netstandard2.0;net472;net461</LibTargetFrameworks>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb;.xml</AllowedOutputExtensionsInPackageBuildOutputFolder>
-    <PackageId>IppDotNetSdkForQuickBooksApiV3</PackageId>
+    <PackageId>Skimmer.QuickBooksApiV3</PackageId>
     <AssemblyName>IppDotNetSdkForQuickBooksApiV3</AssemblyName>
     <DocumentationFile>$(BaseOutputPath)$(AssemblyName).xml</DocumentationFile>
-    <MainVersion>8.0.0.3</MainVersion>
+    <MainVersion>8.2.0.0</MainVersion>
     <!--<PackageVersionSuffix>stable</PackageVersionSuffix>-->
     <!--<Version>$(MainVersion)-$(PackageVersionSuffix)</Version>-->
     <Version>$(MainVersion)</Version>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <NoBuild>true</NoBuild>
     <IncludeBuildOutput>true</IncludeBuildOutput>
     <AutoGenerateBindingRedirects>False</AutoGenerateBindingRedirects>
     <Description>The IPP .NET SDK for QuickBooks V3 is a set of .NET classes that make it easier to call QuickBooks APIs. This is the .Net Standard 2.0 version of the .Net SDK</Description>

@@ -207,7 +207,7 @@ namespace Intuit.Ipp.DataService
                 IdsExceptionManager.HandleException(exception);
             }
 
-            string resourceString = entity.GetType().Name.ToLower(CultureInfo.InvariantCulture);
+            string resourceString = GetResourceString(entity);
 
             // Builds resource Uri
             string uri = string.Format(CultureInfo.InvariantCulture, "{0}/company/{1}/{2}", CoreConstants.VERSION, this.serviceContext.RealmId, resourceString);
@@ -265,7 +265,7 @@ namespace Intuit.Ipp.DataService
                 IdsExceptionManager.HandleException(exception);
             }
 
-            string resourceString = entity.GetType().Name.ToLower(CultureInfo.InvariantCulture);
+            string resourceString = GetResourceString(entity);
 
             // Builds resource Uri
             string uri = string.Format(CultureInfo.InvariantCulture, "{0}/company/{1}/{2}?operation=delete", CoreConstants.VERSION, this.serviceContext.RealmId, resourceString);
@@ -331,7 +331,7 @@ namespace Intuit.Ipp.DataService
             }
 
             CheckForVoidAllowedEntities(entity);
-            string resourceString = entity.GetType().Name.ToLower(CultureInfo.InvariantCulture);
+            string resourceString = GetResourceString(entity);
 
             // Builds resource Uri
             string uri = string.Format(CultureInfo.InvariantCulture, "{0}/company/{1}/{2}?operation=void", CoreConstants.VERSION, this.serviceContext.RealmId, resourceString);
@@ -403,7 +403,7 @@ namespace Intuit.Ipp.DataService
                 IdsExceptionManager.HandleException(exception);
             }
 
-            string resourceString = entity.GetType().Name.ToLower(CultureInfo.InvariantCulture);
+            string resourceString = GetResourceString(entity);
 
             // Builds resource Uri
             string uri = string.Format(CultureInfo.InvariantCulture, "{0}/company/{1}/{2}", CoreConstants.VERSION, this.serviceContext.RealmId, resourceString);
@@ -463,7 +463,7 @@ namespace Intuit.Ipp.DataService
                 IdsExceptionManager.HandleException(exception);
             }
 
-            string resourceString = entity.GetType().Name.ToLower(CultureInfo.InvariantCulture);
+            string resourceString = GetResourceString(entity);
 
             // Builds resource Uri
             string uri = string.Format(CultureInfo.InvariantCulture, "{0}/company/{1}/{2}?include=updateaccountontxns", CoreConstants.VERSION, this.serviceContext.RealmId, resourceString);
@@ -523,7 +523,7 @@ namespace Intuit.Ipp.DataService
                 IdsExceptionManager.HandleException(exception);
             }
 
-            string resourceString = entity.GetType().Name.ToLower(CultureInfo.InvariantCulture);
+            string resourceString = GetResourceString(entity);
 
             // Builds resource Uri
             string uri = string.Format(CultureInfo.InvariantCulture, "{0}/company/{1}/{2}?include=donotupdateaccountontxns", CoreConstants.VERSION, this.serviceContext.RealmId, resourceString);
@@ -586,7 +586,7 @@ namespace Intuit.Ipp.DataService
             this.serviceContext.IppConfiguration.Logger.CustomLogger.Log(Diagnostics.TraceLevel.Info, "Called Method GetPdf by " + entity.GetType().FullName);
 
             string id = string.Empty;
-            string resourceString = entity.GetType().Name.ToLower(CultureInfo.InvariantCulture);
+            string resourceString = GetResourceString(entity);
 
             // Convert to role base to get the Id property which is required to Find the entity.
             IntuitEntity intuitEntity = entity as IntuitEntity;
@@ -670,7 +670,7 @@ namespace Intuit.Ipp.DataService
             this.serviceContext.IppConfiguration.Logger.CustomLogger.Log(Diagnostics.TraceLevel.Info, "Called Method SendEmail by " + entity.GetType().FullName);
 
             string id = string.Empty;
-            string resourceString = entity.GetType().Name.ToLower(CultureInfo.InvariantCulture);
+            string resourceString = GetResourceString(entity);
 
             // Convert to role base to get the Id property which is required to Find the entity.
             IntuitEntity intuitEntity = entity as IntuitEntity;
@@ -792,7 +792,7 @@ namespace Intuit.Ipp.DataService
             }
 
             string id = string.Empty;
-            string resourceString = entity.GetType().Name.ToLower(CultureInfo.InvariantCulture);
+            string resourceString = GetResourceString(entity);
 
             // Convert to role base to get the Id property which is required to Find the entity.
             IntuitEntity intuitEntity = entity as IntuitEntity;
@@ -886,7 +886,7 @@ namespace Intuit.Ipp.DataService
             ServicesHelper.ValidateObject(parentRef, serviceContext);
             parentId = parentRef.Value;
 
-            string resourceString = entity.GetType().Name.ToLower(CultureInfo.InvariantCulture);
+            string resourceString = GetResourceString(entity);
 
             // Convert to role base to get the Id property which is required to Find the entity.
             IntuitEntity intuitEntity = entity as IntuitEntity;
@@ -923,7 +923,7 @@ namespace Intuit.Ipp.DataService
             string level = string.Empty;
             level = ServicesHelper.PrepareByLevel(entity, serviceContext);
 
-            string resourceString = entity.GetType().Name.ToLower(CultureInfo.InvariantCulture);
+            string resourceString = GetResourceString(entity);
 
             // Convert to role base to get the Id property which is required to Find the entity.
             IntuitEntity intuitEntity = entity as IntuitEntity;
@@ -2158,6 +2158,17 @@ namespace Intuit.Ipp.DataService
                 }
             }
             return entities;
+        }
+
+        private string GetResourceString(object entity)
+        {
+            var resourceString = entity.GetType().Name.ToLower(CultureInfo.InvariantCulture);
+            if(resourceString == "taxservice")
+            {
+                resourceString = "taxservice/taxcode";
+            }
+
+            return resourceString;
         }
 
     }
